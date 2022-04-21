@@ -12,7 +12,7 @@ gameScene.preload = function () {
 
     this.load.image('bg', '../assets/circuit2.png');
     this.load.image('dot', '../assets/Test dot for locating the bulb holder spots .png');
-
+    this.load.image('holder', '../assets/cell holder.png');
 }
 
 //called after preload ends
@@ -58,36 +58,45 @@ gameScene.create = function () {
     // testDot.setPosition(DotXcoordinateValue, DotYcoordinateValue);
 
     //Fixed bulb for level 1
-    let fixedBulb = this.add.sprite(0, 0, 'lightON1').setScale(scaleFactor2);// TEST DOT for finding the position of the bulb holder locations in the circut
+    let fixedBulb = this.add.sprite(0, 0, 'lightON1').setScale(scaleFactor2);
     let fixedBulbTop = -0.05;
     let fixedBulbleft = 0.49;
     let fixedBulbXcoordinateValue = landingSpotFinder(fixedBulbleft, fixedBulbTop).xCoordinate;
     let fixedBulbYcoordinateValue = landingSpotFinder(fixedBulbleft, fixedBulbTop).yCoordinate;
     fixedBulb.setPosition(fixedBulbXcoordinateValue, fixedBulbYcoordinateValue);
-
     //Cell 1
     var image0 = this.add.sprite(leftAlignment, topAlignment * 1, 'cell').setScale(scaleFactor2).setInteractive();
+    image0.depth = 1;
     image0.name = "1st_cell"; // unique identifier for this game object( gameObject.name will give access to it)
     this.input.setDraggable(image0);
+    //Cell 2
+    var image1 = this.add.sprite(leftAlignment, topAlignment * 2, 'cell').setScale(scaleFactor2).setInteractive();
+    image2.depth = 1;
+    image1.name = "2nd_cell";
+    this.input.setDraggable(image1);
+    //Cell 3
+    var image2 = this.add.sprite(leftAlignment, topAlignment * 3, 'cell').setScale(scaleFactor2).setInteractive();
+    image2.depth = 1;
+    image2.name = "3rd_cell";
+    this.input.setDraggable(image2);
 
+
+    //Coordinate storage Variables 
     let cellInitPos = [
         [leftAlignment, topAlignment * 1],
         [leftAlignment, topAlignment * 2],
         [leftAlignment, topAlignment * 3]
-    ]; //state variable stores the intial position of the bateries (x and y coordinate)
-
+    ]; //intial position of the bateries (x, y coordinate)
     let cellTargetPos = [
         [landingSpotFinder(leftPercent[0], topPercent[0]).xCoordinate, landingSpotFinder(leftPercent[0], topPercent[0]).yCoordinate],
         [landingSpotFinder(leftPercent[1], topPercent[1]).xCoordinate, landingSpotFinder(leftPercent[1], topPercent[1]).yCoordinate],
         [landingSpotFinder(leftPercent[2], topPercent[2]).xCoordinate, landingSpotFinder(leftPercent[2], topPercent[2]).yCoordinate]
-    ]; //state variable stores the target position of the bateries (x and y coordinate)
-
+    ]; //target position of the bateries (x, y coordinate)
     let cellCurrentPos = [
         [leftAlignment, topAlignment * 1],
         [leftAlignment, topAlignment * 2],
         [leftAlignment, topAlignment * 3]
-    ]; //state variable stores the current position of the bateries (x and y coordinate)
-
+    ]; //current position of the bateries (x, y coordinate)
     let iscellSnapped = [false, false, false]; //state variable stores if a particular cell is snapped to a location.
 
     function spriteNumberFinder(gameObject) {
@@ -108,9 +117,6 @@ gameScene.create = function () {
         }
     }
 
-    // this.input.on('dragstart', function (pointer, gameObject, dragX, dragY) {
-    //     console.log("started dragging");
-    // });
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
         let index = spriteNumberFinder(gameObject);
         console.log(cellCurrentPos[index][0]);
@@ -122,6 +128,7 @@ gameScene.create = function () {
         gameObject.y = dragY;
         if (nearOrNot(cellCurrentPos[index][0], cellCurrentPos[index][1], cellTargetPos[index][0], cellTargetPos[index][1], distThreshhold)) {
             console.log("Target reached");
+
         }
     });
     this.input.on('dragend', function (pointer, gameObject) {
@@ -135,20 +142,19 @@ gameScene.create = function () {
             gameObject.x = cellInitPos[index][0];
             gameObject.y = cellInitPos[index][1];
         }
-        // console.log(nearOrNot(cellCurrentPos[index][0], cellCurrentPos[index][1], cellTargetPos[index][0], cellTargetPos[index][1], 30));
     });
 
-    // cell 2
-    var image1 = this.add.sprite(leftAlignment, topAlignment * 2, 'cell').setScale(scaleFactor2).setInteractive();
-    image1.name = "2nd_cell";
-    this.input.setDraggable(image1);
+    //cell holder 1
+    var image3 = this.add.sprite(cellTargetPos[0][0], cellTargetPos[0][1], 'holder').setScale(scaleFactor);
+    image3.name = "holder1";
 
-    // cell 3
-    var image2 = this.add.sprite(leftAlignment, topAlignment * 3, 'cell').setScale(scaleFactor2).setInteractive();
-    image2.name = "3rd_cell";
-    this.input.setDraggable(image2);
-    // game.add.tween(image2.scale).to({ x: 2, y: 2 }, 2000, Phaser.Easing.Linear.None, true);
+    //cell holder 2
+    var image4 = this.add.sprite(cellTargetPos[1][0], cellTargetPos[1][1], 'holder').setScale(scaleFactor);
+    image4.name = "holder2";
 
+    //cell holder 3
+    var image5 = this.add.sprite(cellTargetPos[2][0], cellTargetPos[2][1], 'holder').setScale(scaleFactor);
+    image5.name = "holder3";
 }
 
 
@@ -162,7 +168,7 @@ let config = {
 
 //Create a new Game, pass the configuration
 let game = new Phaser.Game(config);
-let c1 = 0;
+let timer1 = 0;
 gameScene.update = function () {
     // game.scale.pageAlignHorizontally = true;
     // game.scale.pageAlignVertically = true;
@@ -171,9 +177,10 @@ gameScene.update = function () {
     // Phaser.Actions.RotateAroundDistance([this.container], this.center, this.rotateSpeed, 250);
     // const angleDeg = Math.atan2(this.container.y - this.center.y, this.container.x - this.center.x) * 180 / Math.PI;
     // this.container.angle = angleDeg + 90 // container should face the center point
-    // if (c1 == 0) {
-    //     console.log(gameScene.add.displayList.scene.add.displayList.list[4]);
-    //     c1 += 1;
+    // if (timer1 <= 5000) {
+    //     gameScene.add.displayList.scene.add.displayList.list[4]._scaleX += 0.001;
+    //     gameScene.add.displayList.scene.add.displayList.list[4]._scaleY += 0.001;
+    //     timer1 += 1;
     // }
     // Phaser.Actions.ScaleXY(gameScene.gameObject, 0.5);
 }
