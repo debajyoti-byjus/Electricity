@@ -5,12 +5,12 @@ let gameScene = new Phaser.Scene('Game');
 gameScene.preload = function () {
     //load images
     this.load.image('lightOFF', '../assets/light OFF.png');
-    this.load.image('lightON1', '../assets/light ON1.png');
-    this.load.image('lightON2', '../assets/light ON2.png');
-    this.load.image('lightON3', '../assets/light ON3.png');
+    this.load.image('lightON1', '../assets/light ON 1.png');
+    this.load.image('lightON2', '../assets/light ON 2.png');
+    this.load.image('lightON3', '../assets/light ON 3.png');
     this.load.image('cell', '../assets/battery.png');
 
-    this.load.image('bg', '../assets/circuit2.png');
+    this.load.image('bg', '../assets/circuit1.png');
     this.load.image('dot', '../assets/Test dot for locating the bulb holder spots .png');
     this.load.image('holder', '../assets/cell holder.png');
 }
@@ -23,14 +23,14 @@ gameScene.create = function () {
     let topAlignment = 0.25 * screenheight;
     // Create bg sprite
     // Pic Aspect ratio - 1200/800
-    let bgWidth = 929, bgHeight = 385;
+    let bgWidth = 1408, bgHeight = 423;
     let scaleFactor = 0.45 * screenwidth / bgWidth;
     let scaleFactor2 = scaleFactor * 0.35;
-    let distThreshhold = 150;
+    let distThreshhold = 70;
     let bg = this.add.sprite(0, 0, 'bg').setScale(scaleFactor);
     // Phaser.Display.Align.In.Center(bg, this.add.zone(400, 300, 800, 600));    //  Center the picture in the game
     bg.setOrigin(0, 0); //change the  origin of the asset to top-left corner
-    bg.setPosition(screenwidth * 0.2, screenheight * 0.2); //place sprite postiion in the center
+    bg.setPosition(screenwidth * 0.2, screenheight * 0.242); //place sprite postiion in the center
 
 
     function landingSpotFinder(a, b) {
@@ -50,32 +50,60 @@ gameScene.create = function () {
         // let x = value.xCoordinate;
         // let y = value.yCoordinate;
     }
-    let leftPercent = [0.25, 0.5, 0.75];  //here, 0.517= 51.7%
-    let topPercent = [.99, .99, .99];  //here, 0.05= 5%
+    let leftPercent = [0.2, 0.5, 0.8];  //here, 0.517= 51.7%
+    let topPercent = [1.15, 1.15, 1.15];  //here, 0.05= 5%
     // let testDot = this.add.sprite(0, 0, 'dot');// TEST DOT for finding the position of the bulb holder locations in the circut
     // let DotXcoordinateValue = landingSpotFinder(1, 1).xCoordinate;
     // let DotYcoordinateValue = landingSpotFinder(1, 1).yCoordinate;
     // testDot.setPosition(DotXcoordinateValue, DotYcoordinateValue);
 
+    //Fixed bulb for level 0
+    let fixedBulb0 = this.add.sprite(0, 0, 'lightOFF').setScale(scaleFactor2 * 1.7);
+    let fixedBulbTop0 = -0.2;
+    let fixedBulbleft0 = 0.49;
+    let fixedBulbXcoordinateValue0 = landingSpotFinder(fixedBulbleft0, fixedBulbTop0).xCoordinate;
+    let fixedBulbYcoordinateValue0 = landingSpotFinder(fixedBulbleft0, fixedBulbTop0).yCoordinate;
+    fixedBulb0.setPosition(fixedBulbXcoordinateValue0, fixedBulbYcoordinateValue0);
+
     //Fixed bulb for level 1
-    let fixedBulb = this.add.sprite(0, 0, 'lightON1').setScale(scaleFactor2);
-    let fixedBulbTop = -0.05;
-    let fixedBulbleft = 0.49;
-    let fixedBulbXcoordinateValue = landingSpotFinder(fixedBulbleft, fixedBulbTop).xCoordinate;
-    let fixedBulbYcoordinateValue = landingSpotFinder(fixedBulbleft, fixedBulbTop).yCoordinate;
-    fixedBulb.setPosition(fixedBulbXcoordinateValue, fixedBulbYcoordinateValue);
+    let fixedBulb1 = this.add.sprite(0, 0, 'lightON1').setScale(scaleFactor2 * 1.7);
+    let fixedBulbTop1 = -0.2;
+    let fixedBulbleft1 = 0.49;
+    let fixedBulbXcoordinateValue1 = landingSpotFinder(fixedBulbleft1, fixedBulbTop1).xCoordinate;
+    let fixedBulbYcoordinateValue1 = landingSpotFinder(fixedBulbleft1, fixedBulbTop1).yCoordinate;
+    fixedBulb1.setPosition(fixedBulbXcoordinateValue1, fixedBulbYcoordinateValue1);
+    fixedBulb1.visible = false;
+
+    //Fixed bulb for level 2
+    let fixedBulb2 = this.add.sprite(0, 0, 'lightON2').setScale(scaleFactor2 * 1.7);
+    let fixedBulbTop2 = -0.2;
+    let fixedBulbleft2 = 0.49;
+    let fixedBulbXcoordinateValue2 = landingSpotFinder(fixedBulbleft2, fixedBulbTop2).xCoordinate;
+    let fixedBulbYcoordinateValue2 = landingSpotFinder(fixedBulbleft2, fixedBulbTop2).yCoordinate;
+    fixedBulb2.setPosition(fixedBulbXcoordinateValue2, fixedBulbYcoordinateValue2);
+    fixedBulb2.visible = false;
+
+    //Fixed bulb for level 3
+    let fixedBulb3 = this.add.sprite(0, 0, 'lightON3').setScale(scaleFactor2 * 1.7);
+    let fixedBulbTop3 = -0.2;
+    let fixedBulbleft3 = 0.49;//.49
+    let fixedBulbXcoordinateValue3 = landingSpotFinder(fixedBulbleft3, fixedBulbTop3).xCoordinate;
+    let fixedBulbYcoordinateValue3 = landingSpotFinder(fixedBulbleft3, fixedBulbTop3).yCoordinate;
+    fixedBulb3.setPosition(fixedBulbXcoordinateValue3, fixedBulbYcoordinateValue3);
+    fixedBulb3.visible = false;
+
     //Cell 1
-    var image0 = this.add.sprite(leftAlignment, topAlignment * 1, 'cell').setScale(scaleFactor2).setInteractive();
+    var image0 = this.add.sprite(leftAlignment, topAlignment * 1, 'cell').setScale(scaleFactor2 * 2).setInteractive();
     image0.depth = 1;
     image0.name = "1st_cell"; // unique identifier for this game object( gameObject.name will give access to it)
     this.input.setDraggable(image0);
     //Cell 2
-    var image1 = this.add.sprite(leftAlignment, topAlignment * 2, 'cell').setScale(scaleFactor2).setInteractive();
-    image2.depth = 1;
+    var image1 = this.add.sprite(leftAlignment, topAlignment * 2, 'cell').setScale(scaleFactor2 * 2).setInteractive();
+    image1.depth = 1;
     image1.name = "2nd_cell";
     this.input.setDraggable(image1);
     //Cell 3
-    var image2 = this.add.sprite(leftAlignment, topAlignment * 3, 'cell').setScale(scaleFactor2).setInteractive();
+    var image2 = this.add.sprite(leftAlignment, topAlignment * 3, 'cell').setScale(scaleFactor2 * 2).setInteractive(); 2 * 1.5
     image2.depth = 1;
     image2.name = "3rd_cell";
     this.input.setDraggable(image2);
@@ -116,45 +144,131 @@ gameScene.create = function () {
             return false;
         }
     }
+    // let propName = getPropName(){ //returns "image3" or "image4" or "image5"
+
+    // }
 
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
         let index = spriteNumberFinder(gameObject);
-        console.log(cellCurrentPos[index][0]);
-        console.log(cellCurrentPos[index][1]);
+        // console.log(cellCurrentPos[index][0]);
+        // console.log(cellCurrentPos[index][1]);
 
         cellCurrentPos[index][0] = dragX;
         cellCurrentPos[index][1] = dragY;
+
+        //Show Cell holder
+        switch (index) {
+            case 0:
+                image3.visible = true;
+                break;
+            case 1:
+                image4.visible = true;
+                break;
+            case 2:
+                image5.visible = true;
+                break;
+            default:
+            // empty code block
+        }
+
         gameObject.x = dragX;
         gameObject.y = dragY;
         if (nearOrNot(cellCurrentPos[index][0], cellCurrentPos[index][1], cellTargetPos[index][0], cellTargetPos[index][1], distThreshhold)) {
-            console.log("Target reached");
-
+            // console.log("Target reached");
         }
     });
     this.input.on('dragend', function (pointer, gameObject) {
         let index = spriteNumberFinder(gameObject);
         //if cell is near a holder location then place the cell in that location.
         if (nearOrNot(cellCurrentPos[index][0], cellCurrentPos[index][1], cellTargetPos[index][0], cellTargetPos[index][1], distThreshhold)) {
+
+            //TARGET REACHED
             gameObject.x = cellTargetPos[index][0];
             gameObject.y = cellTargetPos[index][1];
+
+            switch (index) {
+                case 0:
+                    image3.visible = false;
+                    break;
+                case 1:
+                    image4.visible = false;
+                    break;
+                case 2:
+                    image5.visible = false;
+                    break;
+                default:
+                // empty code block
+            }
+            iscellSnapped[index] = true;
+
         }
         else {
             gameObject.x = cellInitPos[index][0];
             gameObject.y = cellInitPos[index][1];
+            iscellSnapped[index] = false;
+        }
+        switch (index) {
+            case 0:
+                image3.visible = false;
+                break;
+            case 1:
+                image4.visible = false;
+                break;
+            case 2:
+                image5.visible = false;
+                break;
+            default:
+            // empty code block
+        }
+
+        //find no. of connected cells
+        let cellCount = 0;
+        for (let i = 0; i <= 3; i++) {
+            if (iscellSnapped[i] == true) {
+                cellCount += 1;
+            }
+        }
+        //all bulbs hidden
+        fixedBulb0.visible = false;
+        fixedBulb1.visible = false;
+        fixedBulb2.visible = false;
+        fixedBulb3.visible = false;
+        // show correct bulb(brightness)
+        switch (cellCount) {
+            case 0:
+                fixedBulb0.visible = true;
+                break;
+            case 1:
+                fixedBulb1.visible = true;
+                break;
+            case 2:
+                fixedBulb2.visible = true;
+                break;
+            case 3:
+                fixedBulb3.visible = true;
+                break;
+            default:
+            // empty code block
         }
     });
 
     //cell holder 1
-    var image3 = this.add.sprite(cellTargetPos[0][0], cellTargetPos[0][1], 'holder').setScale(scaleFactor);
+    var image3 = this.add.sprite(cellTargetPos[0][0], cellTargetPos[0][1], 'holder').setScale(scaleFactor2 * 1.5);
     image3.name = "holder1";
+    image3.visible = false;
+    console.log(image3);
 
     //cell holder 2
-    var image4 = this.add.sprite(cellTargetPos[1][0], cellTargetPos[1][1], 'holder').setScale(scaleFactor);
+    var image4 = this.add.sprite(cellTargetPos[1][0], cellTargetPos[1][1], 'holder').setScale(scaleFactor2 * 1.5);
     image4.name = "holder2";
+    image4.visible = false;
+
 
     //cell holder 3
-    var image5 = this.add.sprite(cellTargetPos[2][0], cellTargetPos[2][1], 'holder').setScale(scaleFactor);
+    var image5 = this.add.sprite(cellTargetPos[2][0], cellTargetPos[2][1], 'holder').setScale(scaleFactor2 * 1.5);
     image5.name = "holder3";
+    image5.visible = false;
+
 }
 
 

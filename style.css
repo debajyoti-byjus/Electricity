@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
+
+.tutorial {
+    margin: 0;
+    padding: 30px;
+    font-family: 'Chakra Petch', sans-serif;
+    position: absolute;
+    display: flex;
+    /* align-items: center;
+    justify-content: center; */
+    /* width: 80%; */
+    color: #ffffffdf;
+    /* text-shadow: 0 0 15px rgb(255, 255, 255); */
+    left: 50%;
+    transform: translateX(-50%);
+    /* bottom: 3%; */
+    /* height: 10%; */
+    /* font-size: 6.8vh; */
+    font-size: 6vh;
+    /* background: linear-gradient(to bottom, #fbff01, rgb(255, 117, 4)); */
+    background: linear-gradient(to bottom, #d4004e, rgb(255, 117, 4));
+    border: #c70032 solid 0.6vh;
+    /* background-image: url("./media\ assets/topnotif.png"); */
+    /* background-size: 100% 100%; */
+    /* background-repeat: no-repeat; */
+    border-radius: 3vh;
+    backdrop-filter: blur(2px);
+    transition: 500ms;
+    z-index: 15;
+}
+
+.tutorialShow {
+    opacity: 1 !important;
+}
+
+#tutorial1 {
+    /* opacity: 0; */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* font-size: 4.5vh; */
+    font-size: 4vh;
+
+    /* display: none; */
+}
+
+#crossBtn {
+    position: relative;
+    top: -50%;
+    left: 90%;
+    text-align: right;
+}
