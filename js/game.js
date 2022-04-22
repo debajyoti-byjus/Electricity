@@ -20,7 +20,7 @@ gameScene.create = function () {
     let screenheight = window.innerHeight;
     let screenwidth = window.innerWidth;
     let leftAlignment = 0.8 * screenwidth;
-    let topAlignment = 0.25 * screenheight;
+    let topAlignment = 0.2 * screenheight;
     // Create bg sprite
     // Pic Aspect ratio - 1200/800
     let bgWidth = 1408, bgHeight = 423;
@@ -286,21 +286,61 @@ let timer1 = 0;
 gameScene.update = function () {
 
 }
+//-----------------------------TUTORIAL ------------------------
+let tutorialLevel = 1;
 
-//Tutorial related Functions
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-async function hideTutorialPopup(htmlobj) {
+//show Blur
+async function showBlurScreen() {
+    document.getElementById("screenblur").classList.add("appear");
+    document.getElementById("screenblur").style.display = "block";
+    await sleep(200);
+    document.getElementById("screenblur").classList.remove("appear");
+}
 
+//hide Blur
+async function hideBlurScreen() {
+    document.getElementById("screenblur").classList.add("disappear");
+    await sleep(200);
+    document.getElementById("screenblur").style.display = "none";
+    document.getElementById("screenblur").classList.remove("disappear");
+}
+
+//show element
+async function showElement(htmlobj) {
+    htmlobj.classList.add("apppear");
+    await sleep(200);
     htmlobj.style.display = "none";
-    console.log("Tutorial Hidden");
+    htmlobj.classList.remove("apppear");
 }
 
-//ONCLICK EVENTS FOR THE TUTORIAL
-document.getElementById("L1tutorial1").onclick = function () {
-    hideTutorialPopup(document.getElementById("L1tutorial1"));
+//hide element
+async function hideElement(htmlobj) {
+    htmlobj.classList.add("disapppear");
+    await sleep(200);
+    htmlobj.style.display = "none";
+    htmlobj.classList.remove("disapppear");
 }
 
+//L1 popup ONCLICK
+document.getElementById("L1tutorial1").onclick = async function () {
+    hideElement(document.getElementById("L1tutorial1"));
+    hideBlurScreen();
+    tutorialLevel = 2;
+}
 
+//main tutorial
+async function Tutorial() {
+    while (true) {
+        await sleep(1000);
+        if (tutorialLevel == 2 && !iscellSnapped[0] && !iscellSnapped[1] && !iscellSnapped[2]) {
+            //show question now
+            await sleep(1000);
 
-
+        }
+    }
+}
 
