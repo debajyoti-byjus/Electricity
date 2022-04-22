@@ -284,51 +284,23 @@ let config = {
 let game = new Phaser.Game(config);
 let timer1 = 0;
 gameScene.update = function () {
-    // game.scale.pageAlignHorizontally = true;
-    // game.scale.pageAlignVertically = true;
-    // game.scale.refresh();
-    // this.bg.x += 1;
-    // Phaser.Actions.RotateAroundDistance([this.container], this.center, this.rotateSpeed, 250);
-    // const angleDeg = Math.atan2(this.container.y - this.center.y, this.container.x - this.center.x) * 180 / Math.PI;
-    // this.container.angle = angleDeg + 90 // container should face the center point
-    // if (timer1 <= 5000) {
-    //     gameScene.add.displayList.scene.add.displayList.list[4]._scaleX += 0.001;
-    //     gameScene.add.displayList.scene.add.displayList.list[4]._scaleY += 0.001;
-    //     timer1 += 1;
-    // }
-    // Phaser.Actions.ScaleXY(gameScene.gameObject, 0.5);
+
 }
 
-// let canvas = document.get
-// window.addEventListener("resize", redraw);
-// function redraw() {
-//     document.querySelector("canvas").style.top = "10px";
-// }
+//Tutorial related Functions
 
-    // let window_height = window.innerHeight;
-    // let window_width = window.innerWidth;
-    // if (window_width / window_height >= 1.77) {
-    //     //--------LANDSCAPE orientation (ASPECT RATIO > 16/9)-----
-    //     // in landscape the width of the activeArea div is 177.77*height
-    //     canvas_height = 0.60 * window_height;  //55% of total height
-    //     canvas_width = 0.80 * 1.5 * window_height; //85% of activeArea width(-which itself is 1.5 times the total height)
-    //     canvas.width = canvas_width;
-    //     canvas.height = canvas_height;
-    //     canvas.style.bottom = "21.5%";
-    //     drawlaser(canvas_height, canvas_width);
-    //     console.log(canvas_height + " = canvas_height");
-    //     console.log(canvas_width + " = canvas_width");
-    //     aspectRatioIndicator = 1
-    // }
-    // else {
-    //     aspectRatioIndicator = 0
-    //     //----------PORTRAIT ORIENTATION----------
-    //     canvas_width = 0.65 * window_width; //85% of activeArea width(-which itself is 1.5 times the total height)
-    //     canvas_height = 0.5 * canvas_width;  //55% of total height
-    //     canvas.width = canvas_width;
-    //     canvas.height = canvas_height;
-    //     var btm = (window_height - canvas_height * 0.93) / 2;
-    //     canvas.style.bottom = btm.toString();
-    //     drawlaser(canvas_height, canvas_width);
-    // }
-// };
+async function hideTutorialPopup(htmlobj) {
+
+    htmlobj.style.display = "none";
+    console.log("Tutorial Hidden");
+}
+
+//ONCLICK EVENTS FOR THE TUTORIAL
+document.getElementById("L1tutorial1").onclick = function () {
+    hideTutorialPopup(document.getElementById("L1tutorial1"));
+}
+
+
+
+
+
