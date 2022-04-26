@@ -78,6 +78,10 @@
     color: rgb(113, 135, 182);
 }
 
+#crossBtn:hover {
+    cursor: pointer;
+}
+
 .questionContainer {
     position: absolute;
     font-family: 'Chakra Petch', sans-serif;
@@ -86,7 +90,7 @@
     height: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 7vh;
+    font-size: 6vh;
     background: linear-gradient(to bottom, #00529f6a, rgba(0, 146, 191, 0.406));
     backdrop-filter: blur(25px);
 
@@ -97,7 +101,7 @@
     border-radius: 2vh;
     box-shadow: inset 7px 6px 32px rgba(255, 255, 255, 0.31), inset -5px -5px 4px rgba(9, 9, 9, 0.13);
     font-weight: 700;
-    /* display: none; */
+    display: none;
 }
 
 .bolder {
@@ -109,7 +113,7 @@
     left: 50%;
     width: 80%;
     transform: translateX(-50%);
-    font-size: 5vh;
+    font-size: 4vh;
     background: linear-gradient(to bottom, #00529f, rgb(0, 146, 191));
     color: #bef1ff;
     padding: 1vh 5vh;
@@ -118,7 +122,7 @@
     border-radius: 2vh;
     box-shadow: inset 7px 6px 32px rgba(255, 255, 255, 0.31), inset -5px -5px 4px rgba(9, 9, 9, 0.13),
         7px 6px 8px rgba(0, 14, 59, 0.801);
-    font-weight: 900;
+    font-weight: 100;
 }
 
 .optionsText:hover {
@@ -140,7 +144,7 @@
 }
 
 /* ------------------ MEDIA QUERIES ------------------ */
-@media only screen and (max-aspect-ratio:16/9) {
+/* @media only screen and (max-aspect-ratio:16/9) {
     .questionContainer {
         width: 100vw;
         height: 56.25vw;
@@ -149,4 +153,4 @@
     .optionsText {
         font-size: 3.99vw;
     }
-}
+} */

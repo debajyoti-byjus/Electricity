@@ -16,6 +16,9 @@ gameScene.preload = function () {
 }
 
 //called after preload ends
+
+//Global variables
+let iscellSnapped = [false, false, false]; //state variable stores if a particular cell is snapped to a location.
 gameScene.create = function () {
     let screenheight = window.innerHeight;
     let screenwidth = window.innerWidth;
@@ -125,7 +128,7 @@ gameScene.create = function () {
         [leftAlignment, topAlignment * 2],
         [leftAlignment, topAlignment * 3]
     ]; //current position of the bateries (x, y coordinate)
-    let iscellSnapped = [false, false, false]; //state variable stores if a particular cell is snapped to a location.
+
 
     function spriteNumberFinder(gameObject) {
         let index;
@@ -333,13 +336,18 @@ document.getElementById("L1tutorial1").onclick = async function () {
 }
 
 //main tutorial
-async function Tutorial() {
+tutorial();
+async function tutorial() {
     while (true) {
         await sleep(1000);
-        if (tutorialLevel == 2 && !iscellSnapped[0] && !iscellSnapped[1] && !iscellSnapped[2]) {
+        if (tutorialLevel == 2 && iscellSnapped[0] && iscellSnapped[1] && iscellSnapped[2]) {
             //show question now
-            await sleep(1000);
-
+            console.log("batteries in place");
+            document.getElementById("question1Containerid").style.display = "block";
+            // await sleep(1000);
+        }
+        else {
+            console.log("batteries not in place");
         }
     }
 }
