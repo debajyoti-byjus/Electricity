@@ -87,11 +87,12 @@
     font-family: 'Chakra Petch', sans-serif;
     top: 50%;
     width: 60%;
-    height: 60%;
+    /* height: 60%; */
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 6vh;
+    font-size: 5vh;
     background: linear-gradient(to bottom, #00529f6a, rgba(0, 146, 191, 0.406));
+    /* background: linear-gradient(to bottom, rgba(92, 92, 92, 0.416), rgba(179, 179, 179, 0.406)); */
     backdrop-filter: blur(25px);
 
     color: rgb(191, 205, 222);
@@ -113,7 +114,7 @@
     left: 50%;
     width: 80%;
     transform: translateX(-50%);
-    font-size: 4vh;
+    font-size: 3.6vh;
     background: linear-gradient(to bottom, #00529f, rgb(0, 146, 191));
     color: #bef1ff;
     padding: 1vh 5vh;
@@ -132,6 +133,14 @@
         7px 6px 20px rgba(83, 83, 83, 0.217); */
 }
 
+#spacerDivId {
+    font-size: 1.5vh;
+}
+
+#AnswerDivid {
+    text-shadow: 0px 0px 3px #00180bfa;
+    font-size: 2.6vh;
+}
 
 #screenblur {
     position: absolute;

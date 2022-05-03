@@ -12,6 +12,8 @@ gameScene.preload = async function () {
 
     this.load.image('bg', '../assets/circuit1.png');
     this.load.image('bg2', '../assets/level2Circuit.png');
+    this.load.image('bg3', '../assets/circuit3.png');
+
     this.load.image('dot', '../assets/Test dot for locating the bulb holder spots .png');
     this.load.image('holder', '../assets/cell holder.png');
     this.load.spritesheet('bulbSheet', '../assets/Spritesheets/spritesheet-horozontal- bulbs.png', { frameWidth: 581, frameHeight: 569 });
@@ -68,6 +70,9 @@ function spriteNumberFinderL2(gameObject) {
     else if (gameObject.name == "1st_Bulb") index = 10;
     else if (gameObject.name == "2nd_Bulb") index = 11;
     else if (gameObject.name == "3rd_Bulb") index = 12;
+    else if (gameObject.name == "1st_BulbL3") index = 22;
+    else if (gameObject.name == "2nd_BulbL3") index = 23;
+    else if (gameObject.name == "3rd_BulbL3") index = 24;
     return index;
 }
 function nearOrNotL2(x1, y1, x2, y2, distThreshhold) {
@@ -106,6 +111,92 @@ let bulbSNAPPINGTargetPosL2 = [
     [landingSpotFinderL2(leftPercentBulbL2[1], topPercentBulbSNAPPINGL2[1]).xCoordinate, landingSpotFinderL2(leftPercentBulbL2[1], topPercentBulbSNAPPINGL2[1]).yCoordinate],
     [landingSpotFinderL2(leftPercentBulbL2[2], topPercentBulbSNAPPINGL2[2]).xCoordinate, landingSpotFinderL2(leftPercentBulbL2[2], topPercentBulbSNAPPINGL2[2]).yCoordinate]
 ]; //target position of the bateries (x, y coordinate)
+
+
+// --------------------LEVEL 3 INITIALIZATION------------------------
+//-------------------------------------------------------------------
+let isbulbSnappedL3 = [false, false, false]; //state variable stores if a particular cell is snapped to a location.
+//Global variables for L3(as we cant declare it inside the next's onclick function)
+//Set variables
+let screenheightL3 = window.innerHeight;
+let screenwidthL3 = window.innerWidth;
+let leftAlignmentL3 = 0.8 * screenwidthL3;
+let topAlignmentL3 = 0.2 * screenheightL3;
+// Create bg sprite
+// Pic Aspect ratio - 1200/800
+let bgWidthL3 = 1167, bgHeightL3 = 927;
+let scaleFactorL3 = 0.4 * screenwidthL3 / bgWidthL3;
+let scaleFactor2L3 = scaleFactorL3 * 0.4;
+let distThreshholdL3 = 90;
+// let brightnessLevelL3 = 0;
+
+//rewrite the functions
+function landingSpotFinderL3(a, b) {
+    //first find the location of the corner of the circuit image
+    let shiftx = screenwidthL3 * 0.2;
+    let shifty = screenheightL3 * 0.3;
+    //find the centre of the image(keep scaling in mind)
+    shiftx += a * scaleFactorL3 * bgWidthL3;
+    shifty += b * scaleFactorL3 * bgHeightL3;
+    return {
+        xCoordinate: shiftx,
+        yCoordinate: shifty,
+    };
+    //example of use of above function
+    // let value = landingSpotFinder(a, b);
+    // let x = value.xCoordinate;
+    // let y = value.yCoordinate;
+}
+function spriteNumberFinderL3(gameObject) {
+    let index;
+    if (gameObject.name == "1st_cell") index = 0;
+    else if (gameObject.name == "2nd_cell") index = 1;
+    else if (gameObject.name == "3rd_cell") index = 2;
+    else if (gameObject.name == "1st_Bulb") index = 10;
+    else if (gameObject.name == "2nd_Bulb") index = 11;
+    else if (gameObject.name == "3rd_Bulb") index = 12;
+    return index;
+}
+function nearOrNotL3(x1, y1, x2, y2, distThreshhold) {
+    /* This function takes two coordinates and tells if they are close or not.
+    If they are near, it returns TRUE else FALSE */
+    if (Math.abs(x1 - x2) <= distThreshhold * 1.5 && Math.abs(y2 - y1) <= distThreshhold * 2) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+//Coordinate storage Variables 
+let leftPercentBulbL3 = [0.5, 0.5, 0.5];  //here, 0.517= 51.7%
+let topPercentBulbL3 = [0.01, 0.34, 0.66];  //here, 0.05= 5%
+let bulbInitPosL3 = [
+    [leftAlignmentL3, topAlignmentL3 * 1],
+    [leftAlignmentL3, topAlignmentL3 * 2],
+    [leftAlignmentL3, topAlignmentL3 * 3]
+]; //intial position of the bateries (x, y coordinate)
+let bulbTargetPosL3 = [
+    [landingSpotFinderL3(leftPercentBulbL3[0], topPercentBulbL3[0]).xCoordinate, landingSpotFinderL3(leftPercentBulbL3[0], topPercentBulbL3[0]).yCoordinate],
+    [landingSpotFinderL3(leftPercentBulbL3[1], topPercentBulbL3[1]).xCoordinate, landingSpotFinderL3(leftPercentBulbL3[1], topPercentBulbL3[1]).yCoordinate],
+    [landingSpotFinderL3(leftPercentBulbL3[2], topPercentBulbL3[2]).xCoordinate, landingSpotFinderL3(leftPercentBulbL3[2], topPercentBulbL3[2]).yCoordinate]
+]; //target position of the bateries (x, y coordinate)
+let bulbCurrentPosL3 = [
+    [leftAlignmentL3, topAlignmentL3 * 1],
+    [leftAlignmentL3, topAlignmentL3 * 2],
+    [leftAlignmentL3, topAlignmentL3 * 3]
+]; //current position of the bateries (x, y coordinate)
+let topPercentBulbSNAPPINGL3 = [0 - 0.18, 0.33 - 0.18, 0.66 - 0.18];  //here, 0.05= 5%
+let bulbSNAPPINGTargetPosL3 = [
+    [landingSpotFinderL3(leftPercentBulbL3[0], topPercentBulbSNAPPINGL3[0]).xCoordinate, landingSpotFinderL3(leftPercentBulbL3[0], topPercentBulbSNAPPINGL3[0]).yCoordinate],
+    [landingSpotFinderL3(leftPercentBulbL3[1], topPercentBulbSNAPPINGL3[1]).xCoordinate, landingSpotFinderL3(leftPercentBulbL3[1], topPercentBulbSNAPPINGL3[1]).yCoordinate],
+    [landingSpotFinderL3(leftPercentBulbL3[2], topPercentBulbSNAPPINGL3[2]).xCoordinate, landingSpotFinderL3(leftPercentBulbL3[2], topPercentBulbSNAPPINGL3[2]).yCoordinate]
+]; //target position of the bateries (x, y coordinate)
+
+// --------------------LEVEL 3 INITIALIZATION COMPLETE---------------------
+//-------------------------------------------------------------------------
+
+
+
 
 let isbulbSnapped = [false, false, false];
 
@@ -310,7 +401,7 @@ gameScene.create = async function () {
             }
         }
 
-        else {
+        else if (index < 15) {
 
 
             bulbCurrentPosL2[index - 10][0] = dragX;
@@ -517,15 +608,93 @@ gameScene.create = async function () {
             // });
 
         }
-        // else {
-        //     gameObject.alpha = 1;
-        //     gameObject.x = dragX;
-        //     gameObject.y = dragY;
-        //     //put the glowwer and floater code here
-        // }
+        else {
+
+            bulbCurrentPosL3[index - 22][0] = dragX;
+            bulbCurrentPosL3[index - 22][1] = dragY;
+
+            //change the cell holder location
+            //holder 1
+            image3.x = bulbTargetPosL3[0][0];
+            image3.y = bulbTargetPosL3[0][1];
+
+            //holder 2
+            image4.x = bulbTargetPosL3[1][0];
+            image4.y = bulbTargetPosL3[1][1];
+
+            //holder 3
+            image5.x = bulbTargetPosL3[2][0];
+            image5.y = bulbTargetPosL3[2][1];
+
+
+            // ==================TEST ZONE ⚠=====================
+            // for (let i = 0; i <= 30; i++) {
+            //     console.log(i, " 🔴🟠🟡🟢🔵🟣", gameScene.add.displayList.list[i].name);
+            // }
+            //===================TEST ZONE ⚠=====================
+
+            //Show Cell holder
+            let indexL3 = index - 22;
+            switch (indexL3) {
+                case 0:
+                    image3.visible = true;
+                    if (isbulbSnappedL3[indexL3] == true) { //was it snapped earlier
+                        //hide unhidden bulb at that location
+                        gameScene.add.displayList.list[22].alpha = 0;
+                        if (isbulbSnappedL3[1] == true) {
+                            gameScene.add.displayList.list[23].alpha = 1;
+                            gameScene.add.displayList.list[23].visible = true;
+                        }
+                        if (isbulbSnappedL3[2] == true) {
+                            gameScene.add.displayList.list[24].alpha = 1;
+                            gameScene.add.displayList.list[24].visible = true;
+
+                        }
+                    }
+                    isbulbSnappedL3[indexL3] = false;
+                    break;
+                case 1:
+                    image4.visible = true;
+                    if (isbulbSnappedL3[indexL3] == true) { //was it snapped earlier
+                        //hide unhidden bulb at that location
+                        gameScene.add.displayList.list[23].alpha = 0;
+                        if (isbulbSnappedL3[0] == true) {
+                            gameScene.add.displayList.list[22].alpha = 1;
+                            gameScene.add.displayList.list[22].visible = true;
+                        }
+                        if (isbulbSnappedL3[2] == true) {
+                            gameScene.add.displayList.list[24].alpha = 1;
+                            gameScene.add.displayList.list[24].visible = true;
+                        }
+                    }
+                    isbulbSnappedL3[indexL3] = false;
+                    break;
+                case 2:
+                    image5.visible = true;
+                    if (isbulbSnappedL3[indexL3] == true) { //was it snapped earlier
+                        //hide unhidden bulb at that location
+                        gameScene.add.displayList.list[24].alpha = 0;
+                        if (isbulbSnappedL3[0] == true) {
+                            gameScene.add.displayList.list[22].alpha = 1;
+                            gameScene.add.displayList.list[22].visible = true;
+                        }
+                        if (isbulbSnappedL3[1] == true) {
+                            gameScene.add.displayList.list[23].alpha = 1;
+                            gameScene.add.displayList.list[23].visible = true;
+                        }
+                    }
+                    isbulbSnappedL3[indexL3] = false;
+                    break;
+                default:
+                // empty code block
+            }
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+            gameObject.alpha = 1;
+        }
     });
     this.input.on('dragend', function (pointer, gameObject) {
-        let index = spriteNumberFinder(gameObject);
+        let index = spriteNumberFinderL2(gameObject);
         if (index < 5) {
             //if cell is near a holder location then place the cell in that location.
             if (nearOrNot(cellCurrentPos[index][0], cellCurrentPos[index][1], cellTargetPos[index][0], cellTargetPos[index][1], distThreshhold)) {
@@ -599,7 +768,7 @@ gameScene.create = async function () {
                 // empty code block
             }
         }
-        else {
+        else if (index < 15) {
             // Here I set the code for the level 2
 
             //----------------------------------------------
@@ -821,6 +990,49 @@ gameScene.create = async function () {
             //     // empty code block
             // }
         }
+        else {
+
+            // Here I set the code for the level 3
+
+            //----------------------------------------------
+            //------------- LEVEL 3 DRAGEND-----------------
+            //----------------------------------------------
+
+            if (nearOrNotL2(bulbCurrentPosL3[index - 22][0], bulbCurrentPosL3[index - 22][1], bulbTargetPosL3[index - 22][0], bulbTargetPosL3[index - 22][1], distThreshholdL3)) {
+                //TARGET REACHED
+                gameObject.x = bulbSNAPPINGTargetPosL3[index - 22][0];
+                gameObject.y = bulbSNAPPINGTargetPosL3[index - 22][1];
+                gameObject.alpha = 0.001;
+                isbulbSnappedL3[index - 22] = true;
+                gameScene.add.displayList.list[index].alpha = 1;
+            }
+            else {
+                gameScene.add.displayList.list[index].alpha = 0;
+                gameObject.alpha = 1;
+                gameObject.x = bulbInitPosL2[index - 22][0];
+                gameObject.y = bulbInitPosL2[index - 22][1];
+                isbulbSnappedL3[index - 22] = false;
+            }
+            //Hiding holders
+            switch (index - 22) {
+                case 0:
+                    image3.visible = false;
+                    break;
+                case 1:
+                    image4.visible = false;
+                    break;
+                case 2:
+                    image5.visible = false;
+                    break;
+                default:
+                // empty code block
+            }
+            console.log("isbulbSnappedL3 - ", isbulbSnappedL3);
+            console.log("tutorialLevel - ", tutorialLevel);
+
+
+            //---------- End of LEVEL 3 --------------
+        }
     });
 
     //cell holder 1
@@ -894,7 +1106,7 @@ document.getElementById("L1tutorial1").onclick = async function () {
 //main tutorial
 tutorialLevel1();
 async function tutorialLevel1() {
-    while (tutorialLevel != 3) {
+    while (tutorialLevel < 3) {
         await sleep(1000);
         if (tutorialLevel == 2 && iscellSnapped[0] && iscellSnapped[1] && iscellSnapped[2]) {
             //show question now
@@ -930,6 +1142,34 @@ async function tutorialLevel1() {
             tutorialLevel = 4;
         }
     }
+    while (tutorialLevel > 3) {
+        await sleep(1000);
+        if (tutorialLevel == 5 && isbulbSnappedL3[0] && isbulbSnappedL3[1] && isbulbSnappedL3[2]) {
+            //show question now
+            // console.log("batteries in place");
+            //delete the HTML elements
+
+            // let tempHTMLStr = "<div class='questionText' id='question1Text'> What did you observe just now? <br> <br></div><div class='optionsText' id = 'options1Text'> The bulbs💡 lights up brightly when there are <b class='bolder' > LESS</b > bulbs💡 connected to the cell🔋</div ><div class='optionsText' id='options2Text' style='transform:translate(-50%,10%);'> The bulbs💡 lights up brightly when there are <b class='bolder'>MORE</b> bulbs💡 connected to the cell🔋</div><div id='AnswerDivid'>";
+
+            document.getElementById("options1Text").style.background = "linear-gradient(to bottom, #00529f, rgb(0, 146, 191))";
+            document.getElementById("options1Text").style.color = "#bef1ff";
+
+            document.getElementById("options2Text").style.background = "linear-gradient(to bottom, #00529f, rgb(0, 146, 191))";
+            document.getElementById("options2Text").style.color = "#bef1ff";
+
+
+            document.getElementById("options1Text").style.pointerEvents = "auto";
+            document.getElementById("options2Text").style.pointerEvents = "auto";
+            // document.getElementById("question1Containerid").innerHTML = tempHTMLStr;
+            document.getElementById("options1Text").innerHTML = "The bulbs💡 light up brightly, irrespective of the number of bulbs💡 connected to the cell🔋";
+            document.getElementById("options2Text").innerHTML = "The bulbs💡 lights up brightly when there are less bulbs💡 connected to the cell🔋";
+
+            document.getElementById("AnswerDivid").innerHTML = "";
+            document.getElementById("question1Containerid").style.display = "block";
+            // document.getElementById("options1Text").style.display = "none";
+            tutorialLevel = 6;
+        }
+    }
 }
 
 
@@ -938,8 +1178,10 @@ document.getElementById("options1Text").onclick = function () {
     //first question stage
     if (tutorialLevel == 2) {
         //tell answer is incorrect, and show correct law
+        question1Text
+
         document.getElementById("AnswerDivid").innerText = "The bulb💡 is brightest when there are MORE batteries🔋🔋🔋 connected to it";
-        document.getElementById("AnswerDivid").style.color = "#ff003c";
+        document.getElementById("AnswerDivid").style.color = "#14f077";
         //deactivating options
         document.getElementById("options1Text").style.pointerEvents = "none";
         document.getElementById("options2Text").style.pointerEvents = "none";
@@ -956,6 +1198,47 @@ document.getElementById("options1Text").onclick = function () {
         document.getElementById("NextBtn").style.left = "auto";
         document.getElementById("NextBtn").style.display = "block";
     }
+    if (tutorialLevel == 4) {
+
+        //tell answer is Correct, and show correct law
+        // document.getElementById("AnswerDivid").innerText = "The bulbs💡 lights up brightly when there are LESS bulbs💡 connected to the cell🔋";
+        document.getElementById("AnswerDivid").innerText = "🎉Correct answer!🥳";
+
+        document.getElementById("AnswerDivid").style.color = "#14f077";
+        //deactivating options
+        document.getElementById("options1Text").style.pointerEvents = "none";
+        document.getElementById("options2Text").style.pointerEvents = "none";
+
+        //highlighting the selected option
+        document.getElementById("options1Text").style.background = "linear-gradient(to left, #62ff2e, #33ff10)";
+
+        //show next button
+        tutorialLevel = 5;
+        document.getElementById("NextBtn").style.bottom = "5%";
+        document.getElementById("NextBtn").style.right = "5%";
+        document.getElementById("NextBtn").style.left = "auto";
+        document.getElementById("NextBtn").style.display = "block";
+
+    }
+    if (tutorialLevel == 6) {
+        //tell answer is Correct, and show correct law
+        document.getElementById("AnswerDivid").innerText = "🎉Correct answer!🥳";
+        document.getElementById("AnswerDivid").style.color = "#14f077";
+        //deactivating options
+        document.getElementById("options1Text").style.pointerEvents = "none";
+        document.getElementById("options2Text").style.pointerEvents = "none";
+
+        //highlighting the selected option
+        document.getElementById("options1Text").style.background = "linear-gradient(to left, #62ff2e, #aaff64)";
+        //show next button
+        tutorialLevel = 7;
+        document.getElementById("FinishBtn").style.bottom = "5%";
+        document.getElementById("FinishBtn").style.right = "5%";
+        document.getElementById("FinishBtn").style.left = "auto";
+        document.getElementById("FinishBtn").style.display = "block";
+
+    }
+
 }
 
 document.getElementById("options2Text").onclick = function () {
@@ -964,13 +1247,14 @@ document.getElementById("options2Text").onclick = function () {
     if (tutorialLevel == 2) {
         //tell answer is Correct, and show correct law
         document.getElementById("AnswerDivid").innerText = "🎉Correct answer!🥳";
-        document.getElementById("AnswerDivid").style.color = "#035c2b";
+        document.getElementById("AnswerDivid").style.color = "#14f077";
         //deactivating options
         document.getElementById("options1Text").style.pointerEvents = "none";
         document.getElementById("options2Text").style.pointerEvents = "none";
 
         //highlighting the selected option
         document.getElementById("options2Text").style.background = "linear-gradient(to left, #62ff2e, #aaff64)";
+
         //show next button
         tutorialLevel = 3;
         document.getElementById("NextBtn").style.bottom = "5%";
@@ -979,21 +1263,46 @@ document.getElementById("options2Text").onclick = function () {
         document.getElementById("NextBtn").style.display = "block";
     }
     if (tutorialLevel == 4) {
-        //tell answer is Correct, and show correct law
-        document.getElementById("AnswerDivid").innerText = "🎉Correct answer!🥳";
-        document.getElementById("AnswerDivid").style.color = "#035c2b";
+
+        //tell answer is incorrect, and show correct law
+        document.getElementById("AnswerDivid").innerText = "The bulbs💡 lights up brightly when there are LESS bulbs💡 connected to the cell🔋";
+        document.getElementById("AnswerDivid").style.color = "#14f077";
         //deactivating options
         document.getElementById("options1Text").style.pointerEvents = "none";
         document.getElementById("options2Text").style.pointerEvents = "none";
 
         //highlighting the selected option
-        document.getElementById("options2Text").style.background = "linear-gradient(to left, #62ff2e, #aaff64)";
+        //highlighting the selected option
+        document.getElementById("options2Text").style.background = "linear-gradient(to left, rgb(255, 45, 164), #ff003c)";
+        document.getElementById("options2Text").style.color = "white";
+
         //show next button
         tutorialLevel = 5;
         document.getElementById("NextBtn").style.bottom = "5%";
         document.getElementById("NextBtn").style.right = "5%";
         document.getElementById("NextBtn").style.left = "auto";
         document.getElementById("NextBtn").style.display = "block";
+    }
+    if (tutorialLevel == 6) {
+
+        //tell answer is incorrect, and show correct law
+        document.getElementById("AnswerDivid").innerText = "The bulbs💡 light up brightly, irrespective of the number of bulbs💡 connected to the cell🔋";
+        document.getElementById("AnswerDivid").style.color = "#14f077";
+        //deactivating options
+        document.getElementById("options1Text").style.pointerEvents = "none";
+        document.getElementById("options2Text").style.pointerEvents = "none";
+
+        //highlighting the selected option
+        //highlighting the selected option
+        document.getElementById("options2Text").style.background = "linear-gradient(to left, rgb(255, 45, 164), #ff003c)";
+        document.getElementById("options2Text").style.color = "white";
+
+        //show next button
+        tutorialLevel = 7;
+        document.getElementById("FinishBtn").style.bottom = "5%";
+        document.getElementById("FinishBtn").style.right = "5%";
+        document.getElementById("FinishBtn").style.left = "auto";
+        document.getElementById("FinishBtn").style.display = "block";
     }
 
 }
@@ -1003,7 +1312,7 @@ document.getElementById("NextBtn").onclick = async function () {
         document.getElementById("question1Containerid").style.display = "none";
 
         //show 
-        let htmlString = "<h1 id='crossBtn'>&times;</h1><br>Connect the Bulbs💡 to the curcit and see what happens !<br><br>";
+        let htmlString = "<h1 id='crossBtn'>&times;</h1><br>Connect the Bulbs💡 to the curcuit in series and see what happens!<br><br>";
 
         document.getElementById("L1tutorial1").innerHTML = htmlString;
         document.getElementById("L1tutorial1").style.display = "block";
@@ -1091,15 +1400,114 @@ document.getElementById("NextBtn").onclick = async function () {
         bulbHidden2High.name = "3rd_Location_Hidden_Bulb_High";
         bulbHidden2High.alpha = 0;
     }
-    // else if(tutorialLevel){
+    // if (tutorialLevel == 5) {
+    //     console.log("Total list of Sprites after completion of Level 2 \n", gameScene.add.displayList.scene.add.displayList.list);
 
+    //     for (let i = 0; i <= 11; i++) {
+    //         console.log("i:", i, gameScene.add.displayList.scene.addisplayList.list[i].name);
+    //     }
     // }
+    if (tutorialLevel == 5) { //Level 2 complete, LEVEL 3 Starts
+        this.style.display = "none";
+        document.getElementById("question1Containerid").style.display = "none";
 
+        // ---------level 3 BG------------------
+        //hiding the level 2 stuff
+        for (let i = 0; i <= 22; i++) {
+            gameScene.add.displayList.scene.add.displayList.list[i].visible = false;
+        }
+
+        let screenheightL3 = window.innerHeight;
+        let screenwidthL3 = window.innerWidth;
+        let leftAlignmentL3 = 0.8 * screenwidthL3;
+        let topAlignmentL3 = 0.2 * screenheightL3;
+        // Create bg2 sprite
+        // Pic Aspect ratio - 1200/800
+        let bgWidthL3 = 1167, bgHeightL3 = 927;
+        let scaleFactorL3 = 0.4 * screenwidthL3 / bgWidthL3;
+        let scaleFactor2L3 = scaleFactorL3 * 0.4;
+        let distThreshholdL3 = 90;
+        // console.log("This -> ", this);
+        // console.log("Show the Background of Level 2");
+        let bg3 = gameScene.add.sprite(0, 0, 'bg3').setScale(scaleFactorL3);
+        // console.log("This inside create():", this);
+        bg3.setOrigin(0, 0); //change the  origin of the asset to top-left corner
+        bg3.setPosition(screenwidthL3 * 0.2, screenheightL3 * 0.3); //place sprite postiion in the center
+        bg3.visible = false;
+        bg3.name = "bgL3";
+
+
+        // for (let i = 0; i <= 23; i++) {
+        //     console.log("i:", i, gameScene.add.displayList.scene.add.displayList.list[i].name);
+        // }
+        // console.log("Total list of Sprites after adding bg of LEvel 3 \n", gameScene.add.displayList.scene.add.displayList.list);
+
+        //show 
+        let htmlString = "<h1 id='crossBtn'>&times;</h1><br>Connect the Bulbs💡 to the curcuit in Parallel and notice what happens!<br><br>";
+
+        document.getElementById("L1tutorial1").innerHTML = htmlString;
+        document.getElementById("L1tutorial1").style.display = "block";
+        showBlurScreen();
+
+        // hide all
+        // console.log(gameScene.add.displayList.scene.add.displayList.list);
+        // for (let i = 0; i <= 24; i++) {
+        //     gameScene.add.displayList.scene.add.displayList.list[i].visible = false;
+        //     console.log("i:", i, gameScene.add.displayList.scene.add.displayList.list[i].name);
+        // }
+
+        //***************************************************************
+        //                        LEVEL 3                                
+        //***************************************************************
+
+        //SET LEVEL 3 SCENE HERE
+        //set bg
+        gameScene.add.displayList.scene.add.displayList.list[24].visible = true;
+
+        //set draggable bulbs
+        //Bulb 1
+        let bulb0L3 = gameScene.add.sprite(leftAlignmentL3, topAlignmentL3 * 1, 'bulbSheet').setScale(scaleFactor2L3 * 1.5).setInteractive();
+        bulb0L3.depth = 2;
+        bulb0L3.name = "1st_BulbL3"; // unique identifier for this game object( gameObject.name will give access to it)
+        gameScene.input.setDraggable(bulb0L3);
+
+        //Cell 2
+        let bulb1L3 = gameScene.add.sprite(leftAlignmentL3, topAlignmentL3 * 2, 'bulbSheet').setScale(scaleFactor2L3 * 1.5).setInteractive();
+        bulb1L3.depth = 2;
+        bulb1L3.name = "2nd_BulbL3";
+        gameScene.input.setDraggable(bulb1L3);
+
+        //Cell 3
+        let bulb2L3 = gameScene.add.sprite(leftAlignmentL3, topAlignmentL3 * 3, 'bulbSheet').setScale(scaleFactor2L3 * 1.5).setInteractive();
+        bulb2L3.depth = 2;
+        bulb2L3.name = "3rd_BulbL3";
+        gameScene.input.setDraggable(bulb2L3);
+
+        //---------------------HIDDEN BULBS IN HOLDER LOC -------------
+        //Set the glowers here; those are the bulbs fixed in the holder locations which glow depending on number of total no of the bulbs connected.
+
+        //LOCATION 1(INDEX-0)
+        let bulbHidden0HighL3 = gameScene.add.sprite(bulbSNAPPINGTargetPosL3[0][0], bulbSNAPPINGTargetPosL3[0][1], 'lightON3').setScale(scaleFactor2L3 * 1.5);
+        bulbHidden0HighL3.depth = 1;
+        bulbHidden0HighL3.name = "1st_Location_Hidden_Bulb_High_L3";
+        bulbHidden0HighL3.alpha = 0;
+
+
+        //LOCATION 2(INDEX-1)
+        let bulbHidden1HighL3 = gameScene.add.sprite(bulbSNAPPINGTargetPosL3[1][0], bulbSNAPPINGTargetPosL3[1][1], 'lightON3').setScale(scaleFactor2L3 * 1.5);
+        bulbHidden1HighL3.depth = 1;
+        bulbHidden1HighL3.name = "2nd_Location_Hidden_Bulb_High_L3";
+        bulbHidden1HighL3.alpha = 0;
+
+
+        //LOCATION 3(INDEX-2)
+        let bulbHidden2HighL3 = gameScene.add.sprite(bulbSNAPPINGTargetPosL3[2][0], bulbSNAPPINGTargetPosL3[2][1], 'lightON3').setScale(scaleFactor2L3 * 1.5);
+        bulbHidden2HighL3.depth = 1;
+        bulbHidden2HighL3.name = "3rd_Location_Hidden_Bulb_High_L3";
+        bulbHidden2HighL3.alpha = 0;
+    }
 }
 
-//***************************************************************
-//                        LEVEL 2                                
-//***************************************************************
 
 
 // set the configuration of the scene
