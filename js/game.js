@@ -134,7 +134,7 @@ let distThreshholdL3 = 90;
 function landingSpotFinderL3(a, b) {
     //first find the location of the corner of the circuit image
     let shiftx = screenwidthL3 * 0.2;
-    let shifty = screenheightL3 * 0.3;
+    let shifty = screenheightL3 * 0.2;
     //find the centre of the image(keep scaling in mind)
     shiftx += a * scaleFactorL3 * bgWidthL3;
     shifty += b * scaleFactorL3 * bgHeightL3;
@@ -169,7 +169,7 @@ function nearOrNotL3(x1, y1, x2, y2, distThreshhold) {
 }
 //Coordinate storage Variables 
 let leftPercentBulbL3 = [0.5, 0.5, 0.5];  //here, 0.517= 51.7%
-let topPercentBulbL3 = [0.01, 0.34, 0.66];  //here, 0.05= 5%
+let topPercentBulbL3 = [0.01 + 0.0, 0.34 + 0.0, 0.66 + 0.0];  //here, 0.05= 5%
 let bulbInitPosL3 = [
     [leftAlignmentL3, topAlignmentL3 * 1],
     [leftAlignmentL3, topAlignmentL3 * 2],
@@ -272,7 +272,7 @@ gameScene.create = async function () {
     // let DotYcoordinateValue = landingSpotFinder(1, 1).yCoordinate;
     // testDot.setPosition(DotXcoordinateValue, DotYcoordinateValue);
 
-    //Fixed bulb for level 0
+    // Fixed bulb for level 0
     let fixedBulb0 = this.add.sprite(0, 0, 'lightOFF').setScale(scaleFactor2 * 1.7);
     let fixedBulbTop0 = -0.2;
     let fixedBulbleft0 = 0.49;
@@ -1432,7 +1432,7 @@ document.getElementById("NextBtn").onclick = async function () {
         let bg3 = gameScene.add.sprite(0, 0, 'bg3').setScale(scaleFactorL3);
         // console.log("This inside create():", this);
         bg3.setOrigin(0, 0); //change the  origin of the asset to top-left corner
-        bg3.setPosition(screenwidthL3 * 0.2, screenheightL3 * 0.3); //place sprite postiion in the center
+        bg3.setPosition(screenwidthL3 * 0.2, screenheightL3 * 0.2); //place sprite postiion in the center
         bg3.visible = false;
         bg3.name = "bgL3";
 
